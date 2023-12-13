@@ -11,7 +11,6 @@ CREATE TABLE questions (
  );
 
 
-
  CREATE TABLE answers (
     id INTEGER NOT NULL,
     label TEXT NOT NULL,
@@ -42,14 +41,11 @@ CREATE TABLE questions (
  deleteAnswers:
  DELETE FROM answers;
 
- selectAllQuestions:
- SELECT *
- FROM questions;
 
- selectAllAnswersFromQuestion:
+ selectAllQuestionsWithAnswers:
  SELECT *
- FROM answers
- WHERE question_id = :questionId;
+ FROM questions
+ INNER JOIN answers ON questions.id = answers.question_id;
 
  insertQuestion:
  INSERT INTO questions(id, label,correctAnswerId)

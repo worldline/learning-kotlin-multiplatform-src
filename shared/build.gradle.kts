@@ -129,7 +129,7 @@ sqldelight {
         create("Database") {
             packageName = "com.myapplication.common.cache"
             listOf("sqldelight")
-            //generateAsync =true
+            generateAsync.set(true)
         }
 
     }

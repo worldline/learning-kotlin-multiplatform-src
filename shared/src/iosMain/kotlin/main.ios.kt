@@ -14,7 +14,7 @@ fun MainViewController() = PreComposeApplication() { App(DatabaseDriverFactory()
 
 actual class DatabaseDriverFactory {
     @Suppress("MISSING_DEPENDENCY_CLASS")
-    actual fun createDriver(): SqlDriver {
+    actual  fun createDriver(): SqlDriver {
         return NativeSqliteDriver(
             DatabaseConfiguration(
                 name = "quizz.db",
