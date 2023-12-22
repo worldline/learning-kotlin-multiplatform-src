@@ -10,6 +10,9 @@ import network.data.Quiz
 
 class QuizApiDatasource {
     private val httpClient = HttpClient {
+        engine {
+
+        }
         install(ContentNegotiation) {
             json(
                 //contentType = ContentType.Text.Plain, // because Github is not returning an 'application/json' header
@@ -21,6 +24,6 @@ class QuizApiDatasource {
     }
     suspend fun getAllQuestions(): Quiz {
         //https://awl.li/devoxxkmm2023
-        return httpClient.get("http://10.0.2.2:9080/quiz").body()
+        return httpClient.get("http://localhost:9080/quiz").body()
     }
 }

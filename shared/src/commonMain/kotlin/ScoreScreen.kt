@@ -1,3 +1,4 @@
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,9 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import moe.tlaster.precompose.navigation.Navigator
 
+@Preview
+@Composable
+internal fun scoreScreenPreview() {
+    scoreScreen(score = "10/10")
+}
 
-@Composable()
-internal fun scoreScreen(navigator: Navigator, score: String){
+@Composable
+internal fun scoreScreen(navigator: Navigator? = null, score: String){
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -47,7 +53,7 @@ internal fun scoreScreen(navigator: Navigator, score: String){
                         Button(
                             modifier = Modifier.padding(all = 20.dp),
                             onClick = {
-                                navigator.navigate(route = "/quiz")
+                                navigator?.navigate(route = "/quiz")
                             }
                         ) {
                             Icon(Icons.Filled.Refresh, contentDescription = "Localized description")

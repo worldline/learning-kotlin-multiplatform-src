@@ -5,9 +5,7 @@ plugins {
     id("app.cash.sqldelight") version "2.0.0"
     kotlin("plugin.serialization") version "1.9.20"
 
-
 }
-
 kotlin {
     androidTarget()
     jvm("desktop")
@@ -19,7 +17,8 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "shared"
-            isStatic = true
+            isStatic = false
+            //linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -58,8 +57,8 @@ kotlin {
                 api("androidx.activity:activity-compose:1.8.1")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.12.0")
-                implementation("io.ktor:ktor-client-android:2.3.6")
                 implementation("app.cash.sqldelight:android-driver:2.0.0")
+                implementation("io.ktor:ktor-client-okhttp:2.3.6")
 
             }
         }

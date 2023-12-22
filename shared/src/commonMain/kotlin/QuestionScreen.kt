@@ -1,3 +1,4 @@
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,10 +31,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import moe.tlaster.precompose.navigation.Navigator
+import network.MockDataSource
 import network.data.Question
 
+@Preview
+@Composable
+internal fun quizScreenPreview() {
+    questionScreen(questions = MockDataSource().generateQuestionsList())
+}
+
 @Composable()
-internal fun questionScreen(navigator: Navigator, questions: List<Question>) {
+internal fun questionScreen(navigator: Navigator?=null, questions: List<Question>) {
 
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
@@ -63,6 +71,7 @@ internal fun questionScreen(navigator: Navigator, questions: List<Question>) {
         }
         Column(modifier = Modifier.selectableGroup()) {
             questions[questionProgress].answers.forEach { answer ->
+
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -88,7 +97,7 @@ internal fun questionScreen(navigator: Navigator, questions: List<Question>) {
                         selectedAnswer = 1
                     }else{
                         // Go to the score section
-                        navigator.navigate("/score/$score out of ${questions.size}")
+                        navigator?.navigate("/score/$score out of ${questions.size}")
                     }
                 }
             ) {

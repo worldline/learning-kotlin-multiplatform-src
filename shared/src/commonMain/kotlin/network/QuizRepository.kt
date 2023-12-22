@@ -1,7 +1,5 @@
 package network
 
-
-
 import app.cash.sqldelight.db.SqlDriver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +41,7 @@ class QuizRepository(sqlDriver: SqlDriver)  {
                     val lastRequest = quizDB.getUpdateTimeStamp()
                     if(lastRequest == 0L || lastRequest - Clock.System.now().epochSeconds > 300000){
                         fetchAndStoreQuiz()
+
                     }else{
                         quizDB.getAllQuestions()
                     }
@@ -52,6 +51,7 @@ class QuizRepository(sqlDriver: SqlDriver)  {
                     e.printStackTrace()
                     mockDataSource.generateDummyQuestionsList()
                 }
+
             }
         }
     }

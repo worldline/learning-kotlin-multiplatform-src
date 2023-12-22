@@ -6,6 +6,9 @@ import network.data.Question
 class MockDataSource {
 
     suspend fun generateDummyQuestionsList():List<Question>{
+        return generateQuestionsList()
+    }
+    fun generateQuestionsList():List<Question>{
         return listOf(
             Question(
                 1,
