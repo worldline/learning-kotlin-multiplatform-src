@@ -1,7 +1,7 @@
 package com.worldline.quiz
 
 import App
-import DatabaseDriverFactory
+//import DatabaseDriverFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +11,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App(DatabaseDriverFactory(applicationContext).createDriver())
+            App()
+            //App(DatabaseDriverFactory(applicationContext).createDriver())
         }
     }
 }

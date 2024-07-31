@@ -1,3 +1,3 @@
 import androidx.compose.ui.window.ComposeUIViewController
 
-fun MainViewController() = ComposeUIViewController { App(DatabaseDriverFactory().createDriver()) }
+fun MainViewController() = ComposeUIViewController { App() }

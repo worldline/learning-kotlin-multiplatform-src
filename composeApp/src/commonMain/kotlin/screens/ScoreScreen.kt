@@ -23,11 +23,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun scoreScreenPreview() {
     val onResetButtonPushed = {  }
-    scoreScreen(onResetButtonPushed,score = "10/10")
+    scoreScreen(onResetButtonPushed,score = "10", total = "10")
 }
 
 @Composable
-internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String){
+internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String, total:String){
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -35,21 +35,18 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String){
         Card(
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.padding(10.dp),
-            backgroundColor = Color.Green
+            backgroundColor = generateScoringColor(score=score,total=total)
 
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
                         Text(
                             fontSize = 15.sp,
                             text = "score",
                         )
                         Text(
                             fontSize = 30.sp,
-                            text = score,
+                            text = "$score/$total",
                         )
                         Button(
                             modifier = Modifier.padding(all = 20.dp),
@@ -59,10 +56,19 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String){
                         ) {
                             Icon(Icons.Filled.Refresh, contentDescription = "Localized description")
                             Text(text = "Retake the Quiz",)
-
                         }
                     }
             }
         }
+    }
+}
+private fun generateScoringColor(score:String,total: String): Color {
+
+    val percentage = (score.toFloat() / total.toFloat()) * 100
+
+    return when {
+        percentage <= 40 -> Color.Red // red
+        percentage in 41.0..69.0 -> Color.Yellow// orange
+        else -> Color.Green// green
     }
 }

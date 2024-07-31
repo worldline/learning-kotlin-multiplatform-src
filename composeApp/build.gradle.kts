@@ -2,7 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
-//import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -11,31 +11,24 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.sqldelight)
-    
 }
 
 kotlin {
-    js(IR){
-        moduleName = "Quiz"
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs{
+        moduleName = "composeApp"
         browser {
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-
                     static = (static ?: mutableListOf()).apply {
                         add(project.rootDir.path)
-                        add(project.rootDir.path + "/composeApp/")
                     }
                 }
             }
         }
         binaries.executable()
     }
-    
- 
-
-     
     
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -59,8 +52,6 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
-        val jsMain by getting
        
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -77,43 +68,38 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation) // Simplify handling of content type based deserialization
             implementation(libs.ktor.serialization.kotlinx.json) // make your dataclasses serializable
             
-            implementation(libs.sqldelight.coroutines.extensions)
+            //implementation(libs.sqldelight.coroutines.extensions)
             implementation(libs.kotlin.navigation)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.kstore)
         }
-        
-        
         
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.sqldelight.android.driver)
+            implementation(libs.kstore.file)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
-            implementation(libs.sqldelight.jdbc.driver)
+            implementation(libs.kstore.file)
+
+
         }
         
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
-            implementation(libs.sqldelight.native.driver)
+            implementation(libs.kstore.file)
+
         }
         
-        jsMain.dependencies {
+        /*wasmJsMain.dependencies {
             implementation("io.ktor:ktor-client-js:3.0.0-beta-2")
-            implementation("app.cash.sqldelight:web-worker-driver:2.0.2")
-            implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.2"))
-            implementation(npm("sql.js", "1.8.0"))  
-            //implementation ("app.cash.sqldelight:primitive-adapters:2.0.2")
-            implementation("org.jetbrains.kotlin:kotlin-stdlib-js:2.0.20-Beta2")
-            implementation(devNpm("copy-webpack-plugin", "11.0.0"))
-            
-             implementation(kotlin("stdlib"))
-            
-          }
+            implementation(libs.kstore.storage)
+          }*/
     }
 }
 
@@ -165,16 +151,3 @@ compose.desktop {
         }
     }
 }
-
-sqldelight {
-    //linkSqlite = true
-    databases {
-        create("Database") {
-            packageName = "com.worldline.quiz.cache"
-            listOf("sqldelight")
-            generateAsync.set(true)
-        }
-
-    }
-}
-
