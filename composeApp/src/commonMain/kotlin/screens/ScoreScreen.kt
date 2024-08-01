@@ -55,7 +55,7 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String, total:St
                             }
                         ) {
                             Icon(Icons.Filled.Refresh, contentDescription = "Localized description")
-                            Text(text = "Retake the Quiz",)
+                            Text(text = "Retake the Quiz")
                         }
                     }
             }
@@ -63,9 +63,7 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String, total:St
     }
 }
 private fun generateScoringColor(score:String,total: String): Color {
-
     val percentage = (score.toFloat() / total.toFloat()) * 100
-
     return when {
         percentage <= 40 -> Color.Red // red
         percentage in 41.0..69.0 -> Color.Yellow// orange

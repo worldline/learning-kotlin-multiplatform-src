@@ -27,7 +27,6 @@ internal fun welcomeScreenPreview() {
 
 @Composable
 internal fun welcomeScreen(onStartButtonPushed: () -> Unit) {
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -37,16 +36,14 @@ internal fun welcomeScreen(onStartButtonPushed: () -> Unit) {
             modifier = Modifier.padding(10.dp),
         ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
                         Image(
                             modifier = Modifier.size(70.dp),
                             painter = painterResource(Res.drawable.question),
                             contentDescription = null
                         )
-
                         Text(
                             text = "Quiz",
-                            fontSize = 70.sp,
+                            fontSize = 30.sp,
                             modifier = Modifier.padding(all = 10.dp)
                         )
                         Text(

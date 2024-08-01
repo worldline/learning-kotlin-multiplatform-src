@@ -1,15 +1,14 @@
-package network
+package data.datasources
 
+import data.dataclasses.Quiz
 import getPlatform
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.cache.*
-import io.ktor.client.plugins.cache.storage.*
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import network.data.Quiz
+
 
 class QuizApiDatasource {
     private val httpClient = HttpClient {

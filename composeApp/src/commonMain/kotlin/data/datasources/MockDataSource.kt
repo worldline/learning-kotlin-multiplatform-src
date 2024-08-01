@@ -1,11 +1,11 @@
-package network
+package data.datasources
 
-import network.data.Answer
-import network.data.Question
+import data.dataclasses.Answer
+import data.dataclasses.Question
 
 class MockDataSource {
 
-    suspend fun generateDummyQuestionsList():List<Question>{
+    fun generateDummyQuestionsList():List<Question>{
         return generateQuestionsList()
     }
     fun generateQuestionsList():List<Question>{

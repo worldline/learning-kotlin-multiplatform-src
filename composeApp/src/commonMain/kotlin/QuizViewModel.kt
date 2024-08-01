@@ -1,17 +1,16 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import network.QuizRepository
-//import app.cash.sqldelight.db.SqlDriver
+import data.QuizRepository
+import data.dataclasses.Question
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import network.data.Question
 
 
-class QuizViewModel() : ViewModel() {
-    private var quizRepository: QuizRepository=QuizRepository()
+class QuizViewModel : ViewModel() {
+    private var quizRepository: QuizRepository = QuizRepository()
     private var _questionState=  MutableStateFlow(listOf<Question>())
     var questionState:StateFlow<List<Question>> = _questionState
     
@@ -36,8 +35,4 @@ class QuizViewModel() : ViewModel() {
             }
         }
     }
-    
-    
-
-    
 }

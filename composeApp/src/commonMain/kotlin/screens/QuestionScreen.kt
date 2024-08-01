@@ -30,18 +30,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import network.MockDataSource
-import network.data.Question
+import data.dataclasses.Question
+import data.datasources.MockDataSource
+
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
 internal fun quizScreenPreview() {
-    val onFinishButtonPushed = { i: Int, i1: Int -> }
+    val onFinishButtonPushed = { _: Int, _: Int -> }
     questionScreen(onFinishButtonPushed,questions = MockDataSource().generateQuestionsList())
 }
 
-@Composable()
+@Composable
 internal fun questionScreen(onFinishButtonPushed: (Int,Int) -> Unit, questions: List<Question>) {
 
     var questionProgress by remember { mutableStateOf(0) }

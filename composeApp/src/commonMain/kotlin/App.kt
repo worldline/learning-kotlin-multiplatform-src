@@ -8,14 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-//import app.cash.sqldelight.db.SqlDriver
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.questionScreen
 import screens.scoreScreen
 import screens.welcomeScreen
 
-
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App(
     viewModel: QuizViewModel = viewModel { QuizViewModel() },
@@ -45,16 +41,14 @@ fun App(
                             }
                         )
                     }
-                    
-                   
                 }
                 composable( route = "/score/{score}/{total}") {
                         scoreScreen(
                             score= it.arguments?.getString("score").toString(),
                             total= it.arguments?.getString("total").toString(),
-                           onResetButtonPushed = {
+                            onResetButtonPushed = {
                                navController.navigate(route = "/quiz")
-                           }
+                            }
                         )
                 }
                     

@@ -1,7 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -29,7 +28,6 @@ kotlin {
         }
         binaries.executable()
     }
-    
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -38,7 +36,6 @@ kotlin {
     }
     
     jvm("desktop")
-    
     listOf(
         iosX64(),
         iosArm64(),
@@ -52,7 +49,6 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-       
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -61,45 +57,37 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             
+            implementation(libs.kotlin.navigation)
+            implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
-            implementation(libs.ktor.client.core) // core source of ktor
-            implementation(libs.ktor.client.content.negotiation) // Simplify handling of content type based deserialization
-            implementation(libs.ktor.serialization.kotlinx.json) // make your dataclasses serializable
-            
-            //implementation(libs.sqldelight.coroutines.extensions)
-            implementation(libs.kotlin.navigation)
-            implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+
             implementation(libs.kstore)
         }
-        
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kstore.file)
-
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
-
-
+            implementation(libs.harawata.appdirs)
         }
-        
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
             implementation(libs.kstore.file)
-
         }
-        
-        /*wasmJsMain.dependencies {
-            implementation("io.ktor:ktor-client-js:3.0.0-beta-2")
+        wasmJsMain.dependencies {
+            //implementation("io.ktor:ktor-client-js:3.0.0-beta-2")
             implementation(libs.kstore.storage)
-          }*/
+        }
     }
 }
 
@@ -143,7 +131,6 @@ android {
 compose.desktop {
     application {
         mainClass = "MainKt"
-
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.worldline.quiz"
