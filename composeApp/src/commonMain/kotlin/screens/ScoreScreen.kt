@@ -48,6 +48,16 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit,score: String, total:St
                             fontSize = 30.sp,
                             text = "$score/$total",
                         )
+
+                        Button (
+                            modifier = Modifier.padding(all = 20.dp),
+                            onClick = {
+
+                            }
+                        ) {
+                            Text(text = "Send the quiz result")
+                        }
+
                         Button(
                             modifier = Modifier.padding(all = 20.dp),
                             onClick = {

@@ -1,28 +1,15 @@
 package screens
+
+import QuizViewModel
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,24 +17,65 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
 import data.datasources.MockDataSource
-
+import data.datasources.globalHttpClient
+import io.ktor.client.request.*
+import io.ktor.http.*
+import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    questionScreen(onFinishButtonPushed,questions = MockDataSource().generateQuestionsList())
+    questionScreen(onFinishButtonPushed, questions = MockDataSource().generateQuestionsList())
 }
 
 @Composable
-internal fun questionScreen(onFinishButtonPushed: (Int,Int) -> Unit, questions: List<Question>) {
-
+internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions: List<Question>) {
+    val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
+
+    suspend fun sendQuizResult() {
+        @Serializable
+        data class QuestionResponse(
+            val id: Long,
+            val question: String,
+            val anwserId: Long,
+            val correctAnwserId: Long,
+            val answer: String
+        )
+
+        @Serializable
+        data class QuizResponse(val responses: List<QuestionResponse>, val score: Int, val nickname: String)
+
+        val httpClient = globalHttpClient
+        val host = "https://yostane.alwaysdata.net/collect"
+        val body = QuizResponse(
+            questions.map {
+                QuestionResponse(
+                    it.id,
+                    it.label,
+                    selectedAnswer,
+                    it.correctAnswerId,
+                    it.answers[selectedAnswer.toInt()].label
+                )
+            },
+            score,
+            "random-user-${(0..1000).random()}"
+        )
+        httpClient.post {
+            url(host)
+            contentType(ContentType.Application.Json)
+            setBody(body)
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color(0xFFF5F5F5)),
@@ -87,36 +115,44 @@ internal fun questionScreen(onFinishButtonPushed: (Int,Int) -> Unit, questions: 
                 }
             }
         }
-        Column(modifier = Modifier.fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
             Button(
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
-                    if(selectedAnswer == questions[questionProgress].correctAnswerId) {
+                    if (selectedAnswer == questions[questionProgress].correctAnswerId) {
                         score++
                     }
                     if (questionProgress < questions.size - 1) {
                         questionProgress++
                         selectedAnswer = 1
-                    }else{
-                        // Go to the score section
-
-                        onFinishButtonPushed(score,questions.size)
+                    } else {
+                        viewModel.viewModelScope.launch {
+                            sendQuizResult()
+                        }
+                        onFinishButtonPushed(score, questions.size)
                     }
                 }
             ) {
-                if(questionProgress < questions.size - 1) nextOrDoneButton(
+                if (questionProgress < questions.size - 1) nextOrDoneButton(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     "Next"
                 )
                 else nextOrDoneButton(Icons.Filled.Done, "Done")
             }
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth().height(20.dp), progress = questionProgress.div(questions.size.toFloat()).plus(1.div(questions.size.toFloat())))
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().height(20.dp),
+                progress = questionProgress.div(questions.size.toFloat()).plus(1.div(questions.size.toFloat()))
+            )
         }
     }
 }
 
 @Composable
-internal fun nextOrDoneButton(iv: ImageVector, label:String){
+internal fun nextOrDoneButton(iv: ImageVector, label: String) {
     Icon(
         iv,
         contentDescription = "Localized description",
