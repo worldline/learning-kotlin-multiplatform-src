@@ -24,6 +24,7 @@ import data.datasources.MockDataSource
 import data.datasources.globalHttpClient
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -70,6 +71,7 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
             score,
             "random-user-${(0..1000).random()}"
         )
+        print(body)
         httpClient.post {
             url(host)
             contentType(ContentType.Application.Json)
@@ -130,7 +132,7 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
                         questionProgress++
                         selectedAnswer = 1
                     } else {
-                        viewModel.viewModelScope.launch {
+                        viewModel.viewModelScope.launch(Dispatchers.Default) {
                             sendQuizResult()
                         }
                         onFinishButtonPushed(score, questions.size)
