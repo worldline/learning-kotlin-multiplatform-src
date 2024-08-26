@@ -71,7 +71,7 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
                 )
             },
             score,
-            "random-user-${(0..1000).random()}"
+            "user-${(0..1000).random()}"
         )
         print("sending $body")
         httpClient.post {
