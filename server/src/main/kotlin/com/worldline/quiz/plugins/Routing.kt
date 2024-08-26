@@ -1,15 +1,13 @@
 package com.worldline.quiz.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import network.data.Answer
 import network.data.Question
 import network.data.Quiz
-import network.data.Answer
 import kotlin.random.Random
-
 
 
 fun Application.configureRouting() {
@@ -18,6 +16,7 @@ fun Application.configureRouting() {
         get("/quiz") {
             call.respond(generateQuiz())
         }
+        staticResources("/", "static")
     }
 }
 
@@ -103,9 +102,10 @@ fun generateQuiz(): Quiz {
     for (i in questions.indices) {
         val shuffledAnswers = answers[i].shuffled(Random(i))
         val correctAnswerId = shuffledAnswers.indexOfFirst { it == answers[i][0] } + 1
-        val question = Question(i + 1L, questions[i], correctAnswerId.toLong(), shuffledAnswers.mapIndexed { index, answer ->
-            Answer(index + 1L, answer)
-        })
+        val question =
+            Question(i + 1L, questions[i], correctAnswerId.toLong(), shuffledAnswers.mapIndexed { index, answer ->
+                Answer(index + 1L, answer)
+            })
         quizQuestions.add(question)
     }
 

@@ -57,7 +57,10 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
         data class QuizResponse(val responses: List<QuestionResponse>, val score: Int, val nickname: String)
 
         val httpClient = globalHttpClient
-        val host = "https://yostane.alwaysdata.net/collect"
+
+        //val host = "http://localhost:8080"
+        //val host = "https://ktor-quiz-collector.onrender.com"
+        val host = "https://yoscours.alwaysdata.net"
         val body = QuizResponse(
             questions.map {
                 QuestionResponse(
@@ -71,9 +74,9 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
             score,
             "random-user-${(0..1000).random()}"
         )
-        print(body)
+        print("sending $body")
         httpClient.post {
-            url(host)
+            url("$host/respond")
             contentType(ContentType.Application.Json)
             setBody(body)
         }
