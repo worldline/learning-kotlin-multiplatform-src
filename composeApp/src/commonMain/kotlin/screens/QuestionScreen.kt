@@ -60,7 +60,7 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
 
         //val host = "http://localhost:8080"
         //val host = "https://ktor-quiz-collector.onrender.com"
-        val host = "https://yoscours.alwaysdata.net"
+        val host = "https://ybwl.alwaysdata.net"
         val body = QuizResponse(
             questions.map {
                 QuestionResponse(
