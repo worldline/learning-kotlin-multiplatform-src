@@ -38,15 +38,15 @@ fun App(
                         questions = questions,
                         onFinishButtonPushed = { score: Int, questionSize: Int ->
 
-                            /* FOR SPEAKER TALK DEMO ON WEB APP */ if (getPlatform().toString() == "WASM") viewModel.postStats(
+                            /* FOR SPEAKER TALK DEMO ON WEB APP */ if (getPlatform().name == "WASM") viewModel.postStats(
                             score,
                             "user-${(0..1000).random()}"
                         )
                             navController.navigate(route = "/score/$score/$questionSize")
                         },
                         /* FOR SPEAKER TALK DEMO ON WEB APP */
-                        onSaveStatQuestion = { id: Long, question: String, anwserId: Long, correctAnwserId: Long, answer: String ->
-                            viewModel.addStats(id, question, anwserId, correctAnwserId, answer)
+                        onSaveStatQuestion = { id: Long, question: String, answerId: Long, correctAnswerId: Long, answer: String ->
+                            viewModel.addStats(id, question, answerId, correctAnswerId, answer)
                         }
                     )
                 }

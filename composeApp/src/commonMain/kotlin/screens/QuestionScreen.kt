@@ -17,30 +17,26 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
-import data.dataclasses.QuestionStats
 import data.datasources.MockDataSource
-import data.datasources.globalHttpClient
 import getPlatform
-import io.ktor.client.request.*
-import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    val onStoreStatQuestion = { _: Long, _: String,_: Long, _: Long,_: String -> }
-    questionScreen( questions = MockDataSource().generateQuestionsList(),onStoreStatQuestion,onFinishButtonPushed,)
+    val onStoreStatQuestion = { _: Long, _: String, _: Long, _: Long, _: String -> }
+    questionScreen(questions = MockDataSource().generateQuestionsList(), onStoreStatQuestion, onFinishButtonPushed)
 }
 
 @Composable
-internal fun questionScreen( questions: List<Question>,onSaveStatQuestion: (Long,String,Long,Long,String) -> Unit, onFinishButtonPushed: (Int, Int) -> Unit) {
+internal fun questionScreen(
+    questions: List<Question>,
+    onSaveStatQuestion: (Long, String, Long, Long, String) -> Unit,
+    onFinishButtonPushed: (Int, Int) -> Unit
+) {
     val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
@@ -93,7 +89,7 @@ internal fun questionScreen( questions: List<Question>,onSaveStatQuestion: (Long
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
                     /* FOR SPEAKER TALK DEMO ON WEB APP */
-                    if(getPlatform().toString() == "WASM") {
+                    if (getPlatform().name == "WASM") {
                         onSaveStatQuestion(
                             questions[questionProgress].id,
                             questions[questionProgress].label,

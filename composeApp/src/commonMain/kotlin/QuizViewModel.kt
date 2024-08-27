@@ -12,10 +12,11 @@ import kotlinx.coroutines.launch
 
 class QuizViewModel : ViewModel() {
     private var quizRepository: QuizRepository = QuizRepository()
-    private var _questionState=  MutableStateFlow(listOf<Question>())
-    /* FOR SPEAKER TALK DEMO ON WEB APP */ private var questionStatsList : ArrayList<QuestionStats> = ArrayList<QuestionStats>()
-    var questionState:StateFlow<List<Question>> = _questionState
-    
+    private var _questionState = MutableStateFlow(listOf<Question>())
+    /* FOR SPEAKER TALK DEMO ON WEB APP */ private var questionStatsList: ArrayList<QuestionStats> =
+        ArrayList<QuestionStats>()
+    var questionState: StateFlow<List<Question>> = _questionState
+
     /* Explicit backing field 
     val questionState : StateFlow<List<Question>>
        field =  MutableStateFlow(listOf<Question>())
@@ -24,31 +25,37 @@ class QuizViewModel : ViewModel() {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
     }
     */
-    
+
     init {
         getQuestionQuiz()
     }
-    
-    private fun getQuestionQuiz(){
+
+    private fun getQuestionQuiz() {
 
         viewModelScope.launch(Dispatchers.Default) {
             _questionState.update {
-               quizRepository.updateQuiz()
+                quizRepository.updateQuiz()
             }
         }
     }
 
     /* FOR SPEAKER TALK DEMO ON WEB APP */
-    public  fun addStats(id: Long, question: String,  anwserId: Long,  correctAnwserId: Long,  answer: String){
-           questionStatsList.add(
-               QuestionStats(id = id, question = question, answerId = anwserId, correctAnwserId = correctAnwserId, answer = answer )
-           )
+    public fun addStats(id: Long, question: String, answerId: Long, correctAnswerId: Long, answer: String) {
+        questionStatsList.add(
+            QuestionStats(
+                id = id,
+                question = question,
+                answerId = answerId,
+                correctAnswerId = correctAnswerId,
+                answer = answer
+            )
+        )
     }
 
     /* FOR SPEAKER TALK DEMO ON WEB APP */
-    public fun postStats(score: Int , nickName: String){
+    public fun postStats(score: Int, nickName: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            quizRepository.storeStats(nickName,score,questionStatsList)
+            quizRepository.storeStats(nickName, score, questionStatsList)
         }
     }
 
