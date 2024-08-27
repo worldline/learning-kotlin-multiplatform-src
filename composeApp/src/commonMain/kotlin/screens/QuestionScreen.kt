@@ -20,8 +20,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
+import data.dataclasses.QuestionStats
 import data.datasources.MockDataSource
 import data.datasources.globalHttpClient
+import getPlatform
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
@@ -33,53 +35,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    questionScreen(onFinishButtonPushed, questions = MockDataSource().generateQuestionsList())
+    val onStoreStatQuestion = { _: Long, _: String,_: Long, _: Long,_: String -> }
+    questionScreen( questions = MockDataSource().generateQuestionsList(),onStoreStatQuestion,onFinishButtonPushed,)
 }
 
 @Composable
-internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions: List<Question>) {
+internal fun questionScreen( questions: List<Question>,onSaveStatQuestion: (Long,String,Long,Long,String) -> Unit, onFinishButtonPushed: (Int, Int) -> Unit) {
     val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
-
-    suspend fun sendQuizResult() {
-        @Serializable
-        data class QuestionResponse(
-            val id: Long,
-            val question: String,
-            val anwserId: Long,
-            val correctAnwserId: Long,
-            val answer: String
-        )
-
-        @Serializable
-        data class QuizResponse(val responses: List<QuestionResponse>, val score: Int, val nickname: String)
-
-        val httpClient = globalHttpClient
-
-        //val host = "http://localhost:8080"
-        val host = "https://ybwl.alwaysdata.net"
-        val body = QuizResponse(
-            questions.map {
-                QuestionResponse(
-                    it.id,
-                    it.label,
-                    selectedAnswer,
-                    it.correctAnswerId,
-                    it.answers[selectedAnswer.toInt()].label
-                )
-            },
-            score,
-            "user-${(0..1000).random()}"
-        )
-        print("sending $body")
-        httpClient.post {
-            url("$host/respond")
-            contentType(ContentType.Application.Json)
-            setBody(body)
-        }
-    }
 
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color(0xFFF5F5F5)),
@@ -127,6 +92,17 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
             Button(
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
+                    /* FOR SPEAKER TALK DEMO ON WEB APP */
+                    if(getPlatform().toString() == "WASM") {
+                        onSaveStatQuestion(
+                            questions[questionProgress].id,
+                            questions[questionProgress].label,
+                            selectedAnswer,
+                            questions[questionProgress].correctAnswerId,
+                            questions[questionProgress].answers[selectedAnswer.toInt()].label
+                        )
+                    }
+
                     if (selectedAnswer == questions[questionProgress].correctAnswerId) {
                         score++
                     }
@@ -134,9 +110,6 @@ internal fun questionScreen(onFinishButtonPushed: (Int, Int) -> Unit, questions:
                         questionProgress++
                         selectedAnswer = 1
                     } else {
-                        viewModel.viewModelScope.launch(Dispatchers.Default) {
-                            sendQuizResult()
-                        }
                         onFinishButtonPushed(score, questions.size)
                     }
                 }

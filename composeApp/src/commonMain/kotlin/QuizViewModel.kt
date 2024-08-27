@@ -2,6 +2,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import data.QuizRepository
 import data.dataclasses.Question
+import data.dataclasses.QuestionStats
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 class QuizViewModel : ViewModel() {
     private var quizRepository: QuizRepository = QuizRepository()
     private var _questionState=  MutableStateFlow(listOf<Question>())
+    /* FOR SPEAKER TALK DEMO ON WEB APP */ private var questionStatsList : ArrayList<QuestionStats> = ArrayList<QuestionStats>()
     var questionState:StateFlow<List<Question>> = _questionState
     
     /* Explicit backing field 
@@ -35,4 +37,19 @@ class QuizViewModel : ViewModel() {
             }
         }
     }
+
+    /* FOR SPEAKER TALK DEMO ON WEB APP */
+    public  fun addStats(id: Long, question: String,  anwserId: Long,  correctAnwserId: Long,  answer: String){
+           questionStatsList.add(
+               QuestionStats(id = id, question = question, answerId = anwserId, correctAnwserId = correctAnwserId, answer = answer )
+           )
+    }
+
+    /* FOR SPEAKER TALK DEMO ON WEB APP */
+    public fun postStats(score: Int , nickName: String){
+        viewModelScope.launch(Dispatchers.Default) {
+            quizRepository.storeStats(nickName,score,questionStatsList)
+        }
+    }
+
 }
