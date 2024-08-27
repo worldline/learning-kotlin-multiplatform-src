@@ -95,7 +95,7 @@ internal fun questionScreen(
                             questions[questionProgress].label,
                             selectedAnswer,
                             questions[questionProgress].correctAnswerId,
-                            questions[questionProgress].answers[selectedAnswer.toInt()].label
+                            questions[questionProgress].answers[selectedAnswer.toInt() - 1].label
                         )
                     }
 
