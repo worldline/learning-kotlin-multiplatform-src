@@ -10,6 +10,6 @@ updates:
       schedule:
           interval: "monthly"
       groups:
-      dev-dependencies:
-        patterns:
-          - "*" # Group all updates
+          dev-dependencies:
+            patterns:
+              - "*" # Group all updates
