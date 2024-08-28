@@ -34,7 +34,7 @@ class QuizApiDatasource {
     suspend fun getAllQuestions(): Quiz {
         //return httpClient.get("https://raw.githubusercontent.com/worldline/learning-kotlin-multiplatform/main/quiz.json").body()
         val host =
-            if (getPlatform().name == "WASM") "/quiz" else "https://verbal-paula-yostane-5911cad1.koyeb.app/quiz"
+            if (getPlatform().name == "WASM") "/quiz" else "https://ktor-quiz-qii6.onrender.com/quiz"
         return httpClient.get(host).body()
 
     }

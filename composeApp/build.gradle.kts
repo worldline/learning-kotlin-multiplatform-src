@@ -129,7 +129,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.worldline.quiz.MainKt"
+        mainClass = "MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.worldline.quiz"
