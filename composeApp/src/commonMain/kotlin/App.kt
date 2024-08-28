@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import screens.questionScreen
 import screens.scoreScreen
 import screens.welcomeScreen
+import kotlin.random.Random
 
 @Composable
 fun App(
@@ -30,17 +31,26 @@ fun App(
                 )
             }
             composable(route = "/quiz") {
-
                 val questions by viewModel.questionState.collectAsState()
+                // random manga character names
+                val nicknames = listOf("Naruto", "Goku", "Luffy", "Ichigo", "Saitama", "Kenshin", "Yusuke", "Gon", "Killua", "Natsu",
+                    "Gon", "Gintoki", "Koro-sensei", "Kakashi", "Vegeta", "Sasuke", "Zoro", "Sanji", "Shanks", "Ace", "Kaido", "Katakuri",
+                    "Law", "Deku", "Bakugo", "Todoroki", "All Might", "Asta", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon",
+                    "Yami", "Magna", "Luck", "Noelle", "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona",
+                    "Fuegoleon", "Leopold", "Kahono", "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna",
+                    "Luck", "Noelle", "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon",
+                    "Leopold", "Kahono", "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna", "Luck", "Noelle",
+                    "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon", "Leopold", "Kahono",
+                    "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna", "Luck", "Noelle", "Mimosa", "Vanessa",
+                    "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon")
 
                 if (questions.isNotEmpty()) {
                     questionScreen(
                         questions = questions,
                         onFinishButtonPushed = { score: Int, questionSize: Int ->
-
                             /* FOR SPEAKER TALK DEMO ON WEB APP */ if (getPlatform().name == "WASM") viewModel.postStats(
                             score,
-                            "user-${(0..1000).random()}"
+                            "${nicknames.random()}-${Random.nextInt(1000)}"
                         )
                             navController.navigate(route = "/score/$score/$questionSize")
                         },
