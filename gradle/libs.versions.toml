@@ -1,6 +1,6 @@
 [versions]
-kotlin = "2.0.0"
-agp = "8.2.0"
+kotlin = "2.0.20"
+agp = "8.5.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -14,11 +14,11 @@ androidx-viewmodel = "2.8.0-rc03"
 androidx-material = "1.12.0"
 compose-plugin = "1.6.11"
 
-kotlinxCoroutinesCore = "1.8.0"
+kotlinxCoroutinesCore = "1.8.1"
 kotlinxDatetime = "0.6.0"
 ktorVersion = "3.0.0-beta-2"
-kstore="0.8.0"
-appdirs="1.2.2"
+kstore = "0.8.0"
+appdirs = "1.2.2"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -48,8 +48,9 @@ harawata-appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 
 # Server
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktorVersion" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktorVersion" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktorVersion" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorVersion" }
+ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktorVersion" }
 ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorVersion" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 

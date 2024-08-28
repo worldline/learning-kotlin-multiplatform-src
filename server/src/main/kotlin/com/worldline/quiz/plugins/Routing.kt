@@ -1,15 +1,13 @@
 package com.worldline.quiz.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import network.data.Answer
 import network.data.Question
 import network.data.Quiz
-import network.data.Answer
 import kotlin.random.Random
-
 
 
 fun Application.configureRouting() {
@@ -18,6 +16,7 @@ fun Application.configureRouting() {
         get("/quiz") {
             call.respond(generateQuiz())
         }
+        staticResources("/", "static")
     }
 }
 
@@ -29,12 +28,12 @@ fun generateQuiz(): Quiz {
         "How does Kotlin Multiplatform facilitate code sharing between platforms?",
         "Which platforms does Kotlin Multiplatform support?",
         "What is a common use case for Kotlin Multiplatform?",
-        "What is a shared code module in Kotlin Multiplatform called?",
+        "Which naming of KMP is deprecated?",
         "How does Kotlin Multiplatform handle platform-specific implementations?",
-        "What languages can be interoperable with Kotlin Multiplatform?",
-        "What tooling supports Kotlin Multiplatform development?",
-        "What is the benefit of using Kotlin Multiplatform for mobile development?",
-        "How does Kotlin Multiplatform differ from Kotlin Native and Kotlin/JS?"
+        "At which Google I/O, Google announced first-class support for Kotlin on Android?",
+        "What is the name of the Kotlin mascot?",
+        "The international yearly Kotlin conference is called...",
+        "Where will be located the next international yearly Kotlin conference?"
     )
 
     val answers = listOf(
@@ -51,7 +50,7 @@ fun generateQuiz(): Quiz {
             "By using code translation tools"
         ),
         listOf(
-            "Android, iOS, and web",
+            "Android, iOS, desktop and web",
             "Only Android",
             "Only iOS",
             "Only web applications"
@@ -63,10 +62,10 @@ fun generateQuiz(): Quiz {
             "Writing a standalone mobile app"
         ),
         listOf(
-            "Shared module",
-            "Kotlin file",
-            "Code package",
-            "Platform code"
+            "Kotlin Multiplatform Mobile (KMM)",
+            "Hadi Multiplatform",
+            "Jetpack multiplatform",
+            "Kodee multiplatform"
         ),
         listOf(
             "Through expect and actual declarations",
@@ -75,37 +74,38 @@ fun generateQuiz(): Quiz {
             "By excluding platform-specific features"
         ),
         listOf(
-            "Java, JavaScript, Swift",
-            "C++, C#, Python",
-            "HTML, CSS, Ruby",
-            "Rust, TypeScript, Perl"
+            "2017",
+            "2016",
+            "2014",
+            "2020"
         ),
         listOf(
-            "IntelliJ IDEA, Android Studio",
-            "Eclipse, NetBeans",
-            "Visual Studio Code",
-            "Xcode"
+            "Kodee",
+            "Hadee",
+            "Kotlinee",
+            "Kotee"
         ),
         listOf(
-            "Code reuse and sharing",
-            "Improved performance",
-            "Simplified UI development",
-            "Enhanced debugging tools"
+            "KotlinConf",
+            "KodeeConf",
+            "KConf",
+            "KotlinKonf"
         ),
         listOf(
-            "Kotlin Multiplatform allows sharing code between different platforms using common modules.",
-            "Kotlin Native is exclusively for iOS development.",
-            "Kotlin/JS is only for web development.",
-            "Kotlin Multiplatform is entirely distinct from other Kotlin flavors."
+            "Copenhagen, Denmark",
+            "Amsterdam, Netherlands",
+            "Tokyo, Japan",
+            "Lille, France"
         )
     )
 
     for (i in questions.indices) {
-        val shuffledAnswers = answers[i].shuffled(Random(i))
+        val shuffledAnswers = answers[i].shuffled(Random.Default)
         val correctAnswerId = shuffledAnswers.indexOfFirst { it == answers[i][0] } + 1
-        val question = Question(i + 1L, questions[i], correctAnswerId.toLong(), shuffledAnswers.mapIndexed { index, answer ->
-            Answer(index + 1L, answer)
-        })
+        val question =
+            Question(i + 1L, questions[i], correctAnswerId.toLong(), shuffledAnswers.mapIndexed { index, answer ->
+                Answer(index + 1L, answer)
+            })
         quizQuestions.add(question)
     }
 

@@ -1,28 +1,15 @@
 package screens
+
+import QuizViewModel
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,21 +17,27 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
 import data.datasources.MockDataSource
-
+import getPlatform
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    questionScreen(onFinishButtonPushed,questions = MockDataSource().generateQuestionsList())
+    val onStoreStatQuestion = { _: Long, _: String, _: Long, _: Long, _: String -> }
+    questionScreen(questions = MockDataSource().generateQuestionsList(), onStoreStatQuestion, onFinishButtonPushed)
 }
 
 @Composable
-internal fun questionScreen(onFinishButtonPushed: (Int,Int) -> Unit, questions: List<Question>) {
-
+internal fun questionScreen(
+    questions: List<Question>,
+    onSaveStatQuestion: (Long, String, Long, Long, String) -> Unit,
+    onFinishButtonPushed: (Int, Int) -> Unit
+) {
+    val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
@@ -87,36 +80,52 @@ internal fun questionScreen(onFinishButtonPushed: (Int,Int) -> Unit, questions: 
                 }
             }
         }
-        Column(modifier = Modifier.fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom
+        ) {
             Button(
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
-                    if(selectedAnswer == questions[questionProgress].correctAnswerId) {
+                    /* FOR SPEAKER TALK DEMO ON WEB APP */
+                    if (getPlatform().name == "WASM") {
+                        onSaveStatQuestion(
+                            questions[questionProgress].id,
+                            questions[questionProgress].label,
+                            selectedAnswer,
+                            questions[questionProgress].correctAnswerId,
+                            questions[questionProgress].answers[selectedAnswer.toInt() - 1].label
+                        )
+                    }
+
+                    if (selectedAnswer == questions[questionProgress].correctAnswerId) {
                         score++
                     }
                     if (questionProgress < questions.size - 1) {
                         questionProgress++
                         selectedAnswer = 1
-                    }else{
-                        // Go to the score section
-
-                        onFinishButtonPushed(score,questions.size)
+                    } else {
+                        onFinishButtonPushed(score, questions.size)
                     }
                 }
             ) {
-                if(questionProgress < questions.size - 1) nextOrDoneButton(
+                if (questionProgress < questions.size - 1) nextOrDoneButton(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     "Next"
                 )
                 else nextOrDoneButton(Icons.Filled.Done, "Done")
             }
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth().height(20.dp), progress = questionProgress.div(questions.size.toFloat()).plus(1.div(questions.size.toFloat())))
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth().height(20.dp),
+                progress = questionProgress.div(questions.size.toFloat()).plus(1.div(questions.size.toFloat()))
+            )
         }
     }
 }
 
 @Composable
-internal fun nextOrDoneButton(iv: ImageVector, label:String){
+internal fun nextOrDoneButton(iv: ImageVector, label: String) {
     Icon(
         iv,
         contentDescription = "Localized description",
