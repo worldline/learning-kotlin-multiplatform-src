@@ -3,11 +3,11 @@
 # https://wrl.li/guideagp
 kotlin = "2.0.20"
 agp = "8.5.0"
-compose-plugin = "1.7.0-rc01"
+compose-plugin = "1.7.0-dev1852"
 
 androidx-activityCompose = "1.9.2"
 navigation = "2.8.0-alpha10"
-androidx-viewmodel = "2.8.0"
+androidx-viewmodel = "2.8.2"
 
 kotlinxCoroutinesCore = "1.9.0"
 kotlinxDatetime = "0.6.1"
