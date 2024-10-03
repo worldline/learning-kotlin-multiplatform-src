@@ -13,18 +13,16 @@ import kotlinx.coroutines.launch
 class QuizViewModel : ViewModel() {
     private var quizRepository: QuizRepository = QuizRepository()
     private var _questionState = MutableStateFlow(listOf<Question>())
-    /* FOR SPEAKER TALK DEMO ON WEB APP */ private var questionStatsList: ArrayList<QuestionStats> =
-        ArrayList<QuestionStats>()
     var questionState: StateFlow<List<Question>> = _questionState
 
-    /* Explicit backing field 
+    /* Can be replaced with explicit backing fields
     val questionState : StateFlow<List<Question>>
        field =  MutableStateFlow(listOf<Question>())
-    in build.gradle.kts
-    sourceSets.all {
-        languageSettings.enableLanguageFeature("ExplicitBackingFields")
-    }
+    -> in build.gradle.kts : sourceSets.all { languageSettings.enableLanguageFeature("ExplicitBackingFields") }
     */
+
+    /* FOR SPEAKER TALK DEMO ON WEB APP */ private var questionStatsList: ArrayList<QuestionStats> =
+        ArrayList<QuestionStats>()
 
     init {
         getQuestionQuiz()
@@ -58,5 +56,4 @@ class QuizViewModel : ViewModel() {
             quizRepository.storeStats(nickName, score, questionStatsList)
         }
     }
-
 }

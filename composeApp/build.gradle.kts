@@ -30,7 +30,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -77,14 +77,13 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
-            implementation(libs.harawata.appdirs)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
             implementation(libs.kstore.file)
         }
         wasmJsMain.dependencies {
-            //implementation("io.ktor:ktor-client-js:3.0.0-beta-2")
+            //implementation(libs.ktor.client.js)
             implementation(libs.kstore.storage)
         }
     }
@@ -116,8 +115,9 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        //JAVA Version for Android -> https://developer.android.com/build/jdks?hl=fr
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
