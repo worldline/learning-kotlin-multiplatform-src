@@ -1,7 +1,6 @@
 import data.dataclasses.Quiz
 import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.file.storeOf
-import net.harawata.appdirs.AppDirsFactory
 import okio.Path.Companion.toPath
 
 class JVMPlatform : Platform {

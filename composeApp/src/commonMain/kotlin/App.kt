@@ -7,10 +7,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import screens.questionScreen
 import screens.scoreScreen
 import screens.welcomeScreen
 import kotlin.random.Random
+import kotlinx.serialization.Serializable
+
+@Serializable
+object WelcomeRoute
+
+@Serializable
+object QuizRoute
+
+@Serializable
+data class ScoreRoute(val score: Int, val questionSize: Int)
 
 @Composable
 fun App(
@@ -21,28 +32,141 @@ fun App(
     MaterialTheme {
         NavHost(
             navController = navController,
-            startDestination = "/welcome",
+            startDestination = WelcomeRoute,
         ) {
-            composable(route = "/welcome") {
+            composable<WelcomeRoute>() {
                 welcomeScreen(
                     onStartButtonPushed = {
-                        navController.navigate(route = "/quiz")
+                        navController.navigate(route = QuizRoute)
                     }
                 )
             }
-            composable(route = "/quiz") {
+            composable<QuizRoute>() {
                 val questions by viewModel.questionState.collectAsState()
                 // random manga character names
-                val nicknames = listOf("Naruto", "Goku", "Luffy", "Ichigo", "Saitama", "Kenshin", "Yusuke", "Gon", "Killua", "Natsu",
-                    "Gon", "Gintoki", "Koro-sensei", "Kakashi", "Vegeta", "Sasuke", "Zoro", "Sanji", "Shanks", "Ace", "Kaido", "Katakuri",
-                    "Law", "Deku", "Bakugo", "Todoroki", "All Might", "Asta", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon",
-                    "Yami", "Magna", "Luck", "Noelle", "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona",
-                    "Fuegoleon", "Leopold", "Kahono", "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna",
-                    "Luck", "Noelle", "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon",
-                    "Leopold", "Kahono", "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna", "Luck", "Noelle",
-                    "Mimosa", "Vanessa", "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon", "Leopold", "Kahono",
-                    "Kiato", "Yuno", "Yami", "Julius", "Licht", "Nero", "Grimm", "Gordon", "Yami", "Magna", "Luck", "Noelle", "Mimosa", "Vanessa",
-                    "Finral", "Charmy", "Gordon", "Grey", "Gimodelo", "Zora", "Mereoleona", "Fuegoleon")
+                val nicknames = listOf(
+                    "Naruto",
+                    "Goku",
+                    "Luffy",
+                    "Ichigo",
+                    "Saitama",
+                    "Kenshin",
+                    "Yusuke",
+                    "Gon",
+                    "Killua",
+                    "Natsu",
+                    "Gon",
+                    "Gintoki",
+                    "Koro-sensei",
+                    "Kakashi",
+                    "Vegeta",
+                    "Sasuke",
+                    "Zoro",
+                    "Sanji",
+                    "Shanks",
+                    "Ace",
+                    "Kaido",
+                    "Katakuri",
+                    "Law",
+                    "Deku",
+                    "Bakugo",
+                    "Todoroki",
+                    "All Might",
+                    "Asta",
+                    "Yuno",
+                    "Yami",
+                    "Julius",
+                    "Licht",
+                    "Nero",
+                    "Grimm",
+                    "Gordon",
+                    "Yami",
+                    "Magna",
+                    "Luck",
+                    "Noelle",
+                    "Mimosa",
+                    "Vanessa",
+                    "Finral",
+                    "Charmy",
+                    "Gordon",
+                    "Grey",
+                    "Gimodelo",
+                    "Zora",
+                    "Mereoleona",
+                    "Fuegoleon",
+                    "Leopold",
+                    "Kahono",
+                    "Kiato",
+                    "Yuno",
+                    "Yami",
+                    "Julius",
+                    "Licht",
+                    "Nero",
+                    "Grimm",
+                    "Gordon",
+                    "Yami",
+                    "Magna",
+                    "Luck",
+                    "Noelle",
+                    "Mimosa",
+                    "Vanessa",
+                    "Finral",
+                    "Charmy",
+                    "Gordon",
+                    "Grey",
+                    "Gimodelo",
+                    "Zora",
+                    "Mereoleona",
+                    "Fuegoleon",
+                    "Leopold",
+                    "Kahono",
+                    "Kiato",
+                    "Yuno",
+                    "Yami",
+                    "Julius",
+                    "Licht",
+                    "Nero",
+                    "Grimm",
+                    "Gordon",
+                    "Yami",
+                    "Magna",
+                    "Luck",
+                    "Noelle",
+                    "Mimosa",
+                    "Vanessa",
+                    "Finral",
+                    "Charmy",
+                    "Gordon",
+                    "Grey",
+                    "Gimodelo",
+                    "Zora",
+                    "Mereoleona",
+                    "Fuegoleon",
+                    "Leopold",
+                    "Kahono",
+                    "Kiato",
+                    "Yuno",
+                    "Yami",
+                    "Julius",
+                    "Licht",
+                    "Nero",
+                    "Grimm",
+                    "Gordon",
+                    "Yami",
+                    "Magna",
+                    "Luck",
+                    "Noelle",
+                    "Mimosa",
+                    "Vanessa",
+                    "Finral",
+                    "Charmy",
+                    "Gordon",
+                    "Grey",
+                    "Gimodelo",
+                    "Zora",
+                    "Mereoleona",
+                    "Fuegoleon"
+                )
 
                 if (questions.isNotEmpty()) {
                     questionScreen(
@@ -52,7 +176,7 @@ fun App(
                             score,
                             "${nicknames.random()}-${Random.nextInt(1000)}"
                         )
-                            navController.navigate(route = "/score/$score/$questionSize")
+                            navController.navigate(route = ScoreRoute(score, questionSize))
                         },
                         /* FOR SPEAKER TALK DEMO ON WEB APP */
                         onSaveStatQuestion = { id: Long, question: String, answerId: Long, correctAnswerId: Long, answer: String ->
@@ -61,16 +185,16 @@ fun App(
                     )
                 }
             }
-            composable(route = "/score/{score}/{total}") {
+            composable<ScoreRoute> { backStackEntry ->
+                val scoreRoute: ScoreRoute = backStackEntry.toRoute<ScoreRoute>()
                 scoreScreen(
-                    score = it.arguments?.getString("score").toString(),
-                    total = it.arguments?.getString("total").toString(),
+                    score = scoreRoute.score,
+                    total = scoreRoute.questionSize,
                     onResetButtonPushed = {
-                        navController.navigate(route = "/quiz")
+                        navController.navigate(route = QuizRoute)
                     }
                 )
             }
-
         }
     }
 }

@@ -20,11 +20,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun scoreScreenPreview() {
     val onResetButtonPushed = { }
-    scoreScreen(onResetButtonPushed, score = "10", total = "10")
+    scoreScreen(onResetButtonPushed, score = 10, total = 10)
 }
 
 @Composable
-internal fun scoreScreen(onResetButtonPushed: () -> Unit, score: String, total: String) {
+internal fun scoreScreen(onResetButtonPushed: () -> Unit, score: Int, total: Int) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -45,7 +45,7 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit, score: String, total: 
                         fontSize = 30.sp,
                         text = "$score/$total",
                     )
-                    
+
                     Button(
                         modifier = Modifier.padding(all = 20.dp),
                         onClick = {
@@ -61,7 +61,7 @@ internal fun scoreScreen(onResetButtonPushed: () -> Unit, score: String, total: 
     }
 }
 
-private fun generateScoringColor(score: String, total: String): Color {
+private fun generateScoringColor(score: Int, total: Int): Color {
     val percentage = (score.toFloat() / total.toFloat()) * 100
     return when {
         percentage <= 40 -> Color.Red // red
