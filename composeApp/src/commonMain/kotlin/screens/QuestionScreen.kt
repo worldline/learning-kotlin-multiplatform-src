@@ -55,7 +55,7 @@ internal fun questionScreen(
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-        }
+
 
         Card(
             shape = RoundedCornerShape(5.dp),
@@ -124,6 +124,8 @@ internal fun questionScreen(
         }
 
     }
+    }
+
 
 }
 

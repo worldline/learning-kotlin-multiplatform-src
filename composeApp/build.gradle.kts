@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
+
   //  alias(libs.plugins.sqldelight)
 }
 
@@ -81,7 +82,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kstore.file)
-            implementation(libs.sqldelight.android)
+            //implementation(libs.sqldelight.android)
 
             //debugImplementation(compose.uiTooling)
         }
@@ -89,12 +90,12 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
-            implementation(libs.sqldelight.desktop)
+            //implementation(libs.sqldelight.desktop)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
             implementation(libs.kstore.file)
-            implementation(libs.sqldelight.native)
+            //implementation(libs.sqldelight.native)
         }
         wasmJsMain.dependencies {
             //implementation(libs.ktor.client.js)

@@ -7,4 +7,6 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinJvm) apply false
+    id("nl.littlerobots.version-catalog-update") version "1.0.0"
+
 }

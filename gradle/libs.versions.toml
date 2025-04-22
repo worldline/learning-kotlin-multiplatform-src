@@ -1,24 +1,23 @@
 [versions]
 # KMP AGP/GRADLE compatibility guide
 # https://wrl.li/guideagp
-kotlin = "2.1.20"
-agp = "8.9.1"
-compose-plugin = "1.7.3"
-hot-reload = "1.0.0-alpha03"
+kotlin = "2.0.20"
+agp = "8.5.0"
+compose-plugin = "1.7.0-rc01"
 
-androidx-activityCompose = "1.10.1"
-navigation = "2.8.0-alpha13"
-androidx-viewmodel = "2.8.4"
+androidx-activityCompose = "1.9.2"
+navigation = "2.8.0-alpha10"
+androidx-viewmodel = "2.8.0"
 
-kotlinxCoroutinesCore = "1.10.1"
+kotlinxCoroutinesCore = "1.9.0"
 kotlinxDatetime = "0.6.1"
-ktorVersion = "3.1.1"
+ktorVersion = "3.0.0-rc-1"
 kstore = "0.9.1"
-logback = "1.5.18"
+logback = "1.5.8"
 
-android-compileSdk = "35"
+android-compileSdk = "34"
 android-minSdk = "24"
-android-targetSdk = "35"
+android-targetSdk = "34"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -39,14 +38,6 @@ kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
 
-#sqldelight
-#sqldelight-web= { module="io.telereso.kmp.sqldelight:sqlite-driver", version="2.1.0-wasm-no-op.4"}
-#sqldelight-core= { module="app.cash.sqldelight:runtime", version="2.0.2" }
-#sqldelight-coroutine= { module="app.cash.sqldelight:coroutines-extensions", version="2.0.2"}
-sqldelight-android= {module="app.cash.sqldelight:android-driver", version="2.0.2"}
-sqldelight-native= {module="app.cash.sqldelight:native-driver", version="2.0.2"}
-sqldelight-desktop= {module="app.cash.sqldelight:sqlite-driver", version="2.0.2"}
-
 # Web
 #ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorVersion" }
 
@@ -66,7 +57,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-hotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "hot-reload" }
-
 ktor = { id = "io.ktor.plugin", version.ref = "ktorVersion" }
-#sqldelight = { id="io.telereso.kmp.sqldelight", version= "2.1.0-wasm-no-op.4"}
