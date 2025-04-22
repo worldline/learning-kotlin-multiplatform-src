@@ -41,14 +41,10 @@ fun App(
                 )
             }
             composable<QuizRoute>() {
-                
                     questionScreen(
-
                         onFinishButtonPushed = { score: Int, questionSize: Int ->
-
                             navController.navigate(route = ScoreRoute(score, questionSize))
                         },
-
                     )
 
             }

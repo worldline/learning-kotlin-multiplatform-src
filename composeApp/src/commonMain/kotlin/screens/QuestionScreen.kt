@@ -30,15 +30,12 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    val onStoreStatQuestion = { _: Long, _: String, _: Long, _: Long, _: String -> }
-    questionScreen(onStoreStatQuestion, onFinishButtonPushed)
+    questionScreen( onFinishButtonPushed)
 }
 
 @Composable
 internal fun questionScreen(
-    onSaveStatQuestion: (Long, String, Long, Long, String) -> Unit,
     onFinishButtonPushed: (Int, Int) -> Unit
-
 ) {
     val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
@@ -101,15 +98,7 @@ internal fun questionScreen(
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
                     /* FOR SPEAKER TALK DEMO ON WEB APP */
-                    if (getPlatform().name == "WASM") {
-                        onSaveStatQuestion(
-                            questions[questionProgress].id,
-                            questions[questionProgress].label,
-                            selectedAnswer,
-                            questions[questionProgress].correctAnswerId,
-                            questions[questionProgress].answers[selectedAnswer.toInt() - 1].label
-                        )
-                    }
+
 
                     if (selectedAnswer == questions[questionProgress].correctAnswerId) {
                         score++
