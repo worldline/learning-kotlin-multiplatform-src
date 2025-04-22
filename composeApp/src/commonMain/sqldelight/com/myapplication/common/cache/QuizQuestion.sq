@@ -1,0 +1,56 @@
+CREATE TABLE update_time (
+     timestamprequest INTEGER
+);
+
+INSERT INTO update_time(timestamprequest) VALUES (0);
+
+CREATE TABLE questions (
+    id INTEGER PRIMARY KEY,
+    label TEXT NOT NULL,
+    correctAnswerId INTEGER  NOT NULL
+ );
+
+
+ CREATE TABLE answers (
+    id INTEGER NOT NULL,
+    label TEXT NOT NULL,
+    question_id INTEGER NOT NULL,
+    PRIMARY KEY (id, question_id),
+    FOREIGN KEY (question_id)
+      REFERENCES questions (id)
+          ON UPDATE CASCADE
+          ON DELETE CASCADE
+ );
+
+
+
+ selectUpdateTimestamp:
+ SELECT *
+ FROM update_time;
+
+ insertTimeStamp:
+ INSERT INTO update_time(timestamprequest)
+ VALUES (:timestamp);
+
+ deleteTimeStamp:
+ DELETE FROM update_time;
+
+ deleteQuestions:
+ DELETE FROM questions;
+
+ deleteAnswers:
+ DELETE FROM answers;
+
+
+ selectAllQuestionsWithAnswers:
+ SELECT *
+ FROM questions
+ INNER JOIN answers ON questions.id = answers.question_id;
+
+ insertQuestion:
+ INSERT INTO questions(id, label,correctAnswerId)
+ VALUES (?, ?, ?);
+
+ insertAnswer:
+ INSERT INTO answers(id, label,question_id)
+ VALUES (?, ?, ?);
