@@ -18,6 +18,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import quiz.composeapp.generated.resources.Res
 import quiz.composeapp.generated.resources.question
+import quiz.composeapp.generated.resources.question2
 
 @Preview
 @Composable
@@ -39,7 +40,7 @@ fun welcomeScreen(onStartButtonPushed: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     modifier = Modifier.size(70.dp),
-                    painter = painterResource(Res.drawable.question),
+                    painter = painterResource(Res.drawable.question2),
                     contentDescription = null
                 )
                 Text(

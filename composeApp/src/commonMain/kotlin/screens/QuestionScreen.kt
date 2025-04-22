@@ -17,6 +17,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
 import data.datasources.MockDataSource
@@ -28,26 +31,35 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 internal fun quizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
     val onStoreStatQuestion = { _: Long, _: String, _: Long, _: Long, _: String -> }
-    questionScreen(questions = MockDataSource().generateQuestionsList(), onStoreStatQuestion, onFinishButtonPushed)
+    questionScreen(onStoreStatQuestion, onFinishButtonPushed)
 }
 
 @Composable
 internal fun questionScreen(
-    questions: List<Question>,
     onSaveStatQuestion: (Long, String, Long, Long, String) -> Unit,
     onFinishButtonPushed: (Int, Int) -> Unit
+
 ) {
     val viewModel: QuizViewModel = viewModel { QuizViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
 
-    Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color(0xFFF5F5F5)),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    LaunchedEffect(Unit) {
+        viewModel.getQuestionQuiz()
+    }
+    val questions by viewModel.questionState.collectAsState()
 
-    ) {
+    if (questions.isNotEmpty()) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color(0xFFF5F5F5)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+        }
+
         Card(
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.padding(60.dp)
@@ -121,7 +133,9 @@ internal fun questionScreen(
                 progress = questionProgress.div(questions.size.toFloat()).plus(1.div(questions.size.toFloat()))
             )
         }
+
     }
+
 }
 
 @Composable

@@ -25,10 +25,10 @@ class QuizViewModel : ViewModel() {
         ArrayList<QuestionStats>()
 
     init {
-        getQuestionQuiz()
+        // getQuestionQuiz()
     }
 
-    private fun getQuestionQuiz() {
+    public fun getQuestionQuiz() {
 
         viewModelScope.launch(Dispatchers.Default) {
             _questionState.update {

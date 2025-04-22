@@ -12,6 +12,8 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
+        maven { url = uri("https://s01.oss.sonatype.org/content/groups/staging") }
     }
 }
 
@@ -25,6 +27,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        maven { url = uri("https://s01.oss.sonatype.org/content/groups/staging") }
     }
 }
 

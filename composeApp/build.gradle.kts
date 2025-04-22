@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -9,9 +10,13 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
+  //  alias(libs.plugins.sqldelight)
 }
 
+
+
 kotlin {
+
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
@@ -66,25 +71,37 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             implementation(libs.kstore)
+
+            //implementation(libs.sqldelight.core)
+            //implementation(libs.sqldelight.coroutine)
+
         }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kstore.file)
+            implementation(libs.sqldelight.android)
+
+            //debugImplementation(compose.uiTooling)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
+            implementation(libs.sqldelight.desktop)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
             implementation(libs.kstore.file)
+            implementation(libs.sqldelight.native)
         }
         wasmJsMain.dependencies {
             //implementation(libs.ktor.client.js)
             implementation(libs.kstore.storage)
+
+            //implementation(libs.sqldelight.web)
+
         }
     }
 }
@@ -122,8 +139,8 @@ android {
     buildFeatures {
         compose = true
     }
-    dependencies {
-        debugImplementation(compose.uiTooling)
+    composeCompiler {
+        featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
     }
 }
 
@@ -137,3 +154,15 @@ compose.desktop {
         }
     }
 }
+
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
+}
+
+/*sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.myapplication.common.cache")
+        }
+    }
+}*/
