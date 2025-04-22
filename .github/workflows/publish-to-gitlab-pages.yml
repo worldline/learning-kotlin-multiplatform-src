@@ -43,12 +43,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: wasmJs-artifacts
+        path: ./artifact  # Specify the path where you want the artifact to be downloaded
 
     - name: Deploy to GitLab Pages
       uses: crazy-max/ghaction-github-pages@v2
       with:
-        # Assuming that the branch for pages on GitLab is `pages`.
-        target_branch: pages  
-        build_dir: composeApp/build/dist/wasmJs/productionExecutable
+        target_branch: pages  # Specify the target branch for GitLab Pages
+        build_dir: ./artifact  # This should match the path you downloaded the artifact to
       env:
-        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}  # Replace with your GitLab token or authentication method
+        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}  # Replace with the correct token for authentication
