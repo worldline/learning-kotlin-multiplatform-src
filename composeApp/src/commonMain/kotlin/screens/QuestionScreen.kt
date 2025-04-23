@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import data.dataclasses.Question
 import data.datasources.MockDataSource
@@ -45,7 +46,7 @@ internal fun questionScreen(
     LaunchedEffect(Unit) {
         viewModel.getQuestionQuiz()
     }
-    val questions by viewModel.questionState.collectAsState()
+    val questions by viewModel.questionState.collectAsStateWithLifecycle()
 
     if (questions.isNotEmpty()) {
 

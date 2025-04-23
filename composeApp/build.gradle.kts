@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -10,23 +9,23 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinSerialization)
-
-  //  alias(libs.plugins.sqldelight)
+    //alias(libs.plugins.sqldelight)
 }
 
-
-
 kotlin {
-
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "composeApp"
+        outputModuleName = "composeApp"
         browser {
+            val rootDirPath = project.rootDir.path
+            val projectDirPath = project.projectDir.path
             commonWebpackConfig {
                 outputFileName = "composeApp.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
-                        add(project.rootDir.path)
+                        // Serve sources to debug inside browser
+                        add(rootDirPath)
+                        add(projectDirPath)
                     }
                 }
             }
@@ -61,7 +60,6 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
             implementation(libs.kotlin.navigation)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.kotlinx.coroutines.core)
@@ -70,7 +68,6 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
-
             implementation(libs.kstore)
 
             //implementation(libs.sqldelight.core)
@@ -82,14 +79,17 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kstore.file)
-            //implementation(libs.sqldelight.android)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
+            //implementation(libs.sqldelight.android)
             //debugImplementation(compose.uiTooling)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
+
             //implementation(libs.sqldelight.desktop)
         }
         iosMain.dependencies {
@@ -100,8 +100,7 @@ kotlin {
         wasmJsMain.dependencies {
             //implementation(libs.ktor.client.js)
             implementation(libs.kstore.storage)
-
-            //implementation(libs.sqldelight.web)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-wasm-js:1.10.2")
 
         }
     }
@@ -140,9 +139,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeCompiler {
-        featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-    }
 }
 
 compose.desktop {
@@ -156,9 +152,6 @@ compose.desktop {
     }
 }
 
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
 
 /*sqldelight {
     databases {

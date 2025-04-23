@@ -37,6 +37,5 @@ class QuizApiDatasource {
         /*val host =
             if (getPlatform().name == "WASM") "/quiz" else "https://ktor-quiz-qii6.onrender.com/quiz"
         return httpClient.get(host).body()*/
-
     }
 }
