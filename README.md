@@ -1,7 +1,9 @@
 ```mermaid
-graph TD 
+graph TD
 
-subgraph "Target Applications" 
+subgraph "composeApp module" 
+
+subgraph "target app sourceSets" 
 
 A[Android App]; 
 B[Desktop App]; 
@@ -34,9 +36,12 @@ subgraph "Data Logic Layer"
     end
 end
 
+end
+
+C2 -- ScoreArgument --> C3
 M -- /quiz --> ServerModule
-F -- Handles State --> G;
-G -- Collect flow --> F;
+C2 -- Handles State --> G;
+G -- Collect flow --> C2;
 G -- MutableStateFlow --> H;
 H  --> I & J & K;
 ```
