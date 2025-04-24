@@ -31,8 +31,12 @@ class QuizViewModel : ViewModel() {
     public fun getQuestionQuiz() {
 
         viewModelScope.launch(Dispatchers.Default) {
+            try {
             _questionState.update {
                 quizRepository.updateQuiz()
+            }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

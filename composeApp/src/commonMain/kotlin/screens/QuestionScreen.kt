@@ -27,6 +27,7 @@ import data.datasources.MockDataSource
 import getPlatform
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+
 @Preview
 @Composable
 internal fun quizScreenPreview() {
@@ -57,7 +58,6 @@ internal fun questionScreen(
 
         ) {
 
-
         Card(
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.padding(60.dp)
@@ -74,6 +74,7 @@ internal fun questionScreen(
                 )
             }
         }
+
         Column(modifier = Modifier.selectableGroup()) {
             questions[questionProgress].answers.forEach { answer ->
 
@@ -98,8 +99,6 @@ internal fun questionScreen(
             Button(
                 modifier = Modifier.padding(bottom = 20.dp),
                 onClick = {
-                    /* FOR SPEAKER TALK DEMO ON WEB APP */
-
 
                     if (selectedAnswer == questions[questionProgress].correctAnswerId) {
                         score++

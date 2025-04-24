@@ -11,10 +11,11 @@ import kotlinx.serialization.json.Json
 import io.ktor.http.ContentType
 
 val globalHttpClient = HttpClient {
-    engine {
+
+    /*    engine {
 
     }
-    /*install(HttpCache) {
+    install(HttpCache) {
         privateStorage(
             storage = CacheStorage.Unlimited.invoke()
         )
