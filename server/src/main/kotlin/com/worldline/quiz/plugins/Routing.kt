@@ -4,6 +4,13 @@ import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sse.sse
+import io.modelcontextprotocol.kotlin.sdk.Implementation
+import io.modelcontextprotocol.kotlin.sdk.ServerCapabilities
+import io.modelcontextprotocol.kotlin.sdk.server.Server
+import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
+import io.modelcontextprotocol.kotlin.sdk.server.SseServerTransport
+import io.modelcontextprotocol.kotlin.sdk.server.mcp
 import network.data.Answer
 import network.data.Question
 import network.data.Quiz
@@ -12,11 +19,27 @@ import kotlin.random.Random
 
 fun Application.configureRouting() {
 
+    val server = configureMcpServer()
+    lateinit var transport: SseServerTransport
+
     routing {
+        // 2️⃣ Register /sse for streaming
+        sse("/sse") {
+            // Assign the shared transport on first connection
+            transport = SseServerTransport("/message", this)
+            server.connect(transport)
+        }
+        // 3️⃣ Register /message for POST (tools, etc)
+        post("/message") {
+            // Use the already created transport instance
+                transport.handlePostMessage(call)
+        }
+
         get("/quiz") {
             call.respond(generateQuiz())
         }
-        staticResources("/", "static")
+
+        //staticResources("/", "static")
     }
 }
 

@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.cors)
     implementation(libs.ktor.server.config.yaml)
+    implementation("io.modelcontextprotocol:kotlin-sdk:0.5.0")
 }
 
 ktor {
