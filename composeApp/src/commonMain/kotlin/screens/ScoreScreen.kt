@@ -18,13 +18,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-internal fun scoreScreenPreview() {
+internal fun ScoreScreenPreview() {
     val onResetButtonPushed = { }
-    scoreScreen(onResetButtonPushed, score = 10, total = 10)
+    ScoreScreen(onResetButtonPushed, score = 10, total = 10)
 }
 
 @Composable
-internal fun scoreScreen(onResetButtonPushed: () -> Unit, score: Int, total: Int) {
+internal fun ScoreScreen(onResetButtonPushed: () -> Unit, score: Int, total: Int) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()

@@ -1,38 +1,41 @@
 package data
 
 import data.dataclasses.Question
-import data.dataclasses.QuestionStats
 import data.datasources.MockDataSource
 import data.datasources.QuizApiDatasource
-import data.datasources.QuizKStoreDataSource
-import data.datasources.StatsApiDatasource
-import kotlinx.datetime.Clock
+import data.datasources.KStoreDataSource
+import data.datasources.SqlDelightDataSource
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class QuizRepository {
-
     private val mockDataSource = MockDataSource()
     private val quizApiDatasource = QuizApiDatasource()
-    private var quizKStoreDataSource = QuizKStoreDataSource()
+    private var quizKStoreDataSource = KStoreDataSource(AppInitializer.getKStoreInstance())
+    private var sqlDelightDataSource = SqlDelightDataSource(AppInitializer.getDatabase()!!)
 
     private suspend fun fetchQuiz(): List<Question> = quizApiDatasource.getAllQuestions().questions
 
-    /* FOR SPEAKER TALK DEMO ON WEB APP */ private val statsDataSource = StatsApiDatasource()
-
+    @OptIn(ExperimentalTime::class)
     private suspend fun fetchAndStoreQuiz(): List<Question> {
-        quizKStoreDataSource.resetQuizKstore()
+        sqlDelightDataSource.resetQuestions()
+
         val questions = fetchQuiz()
-        quizKStoreDataSource.insertQuestions(questions)
+        sqlDelightDataSource.insertQuestions(questions)
         quizKStoreDataSource.setUpdateTimeStamp(Clock.System.now().epochSeconds)
         return questions
     }
 
+    @OptIn(ExperimentalTime::class)
     suspend fun updateQuiz(): List<Question> {
         try {
             val lastRequest = quizKStoreDataSource.getUpdateTimeStamp()
             return if (lastRequest == 0L || lastRequest - Clock.System.now().epochSeconds > 300000) {
                 fetchAndStoreQuiz()
             } else {
-                quizKStoreDataSource.getAllQuestions()
+                //quizKStoreDataSource.getAllQuestions()
+                sqlDelightDataSource.getAllQuestions()
             }
         } catch (e: NullPointerException) {
             return fetchAndStoreQuiz()
@@ -42,8 +45,4 @@ class QuizRepository {
         }
     }
 
-    /* FOR SPEAKER TALK DEMO ON WEB APP */
-    suspend fun storeStats(nickname: String, score: Int, responses: List<QuestionStats>) {
-        statsDataSource.postQuestionStats(score, nickname, responses)
-    }
 }

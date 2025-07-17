@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -10,8 +12,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-
-    //alias(libs.plugins.sqldelight)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -55,6 +56,10 @@ kotlin {
         binaries.executable()
     }
 
+
+
+
+
     sourceSets {
         val desktopMain by getting
         commonMain.dependencies {
@@ -62,6 +67,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
+            implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.kotlin.navigation)
@@ -75,8 +81,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kstore)
 
-            //implementation(libs.sqldelight.core)
-            //implementation(libs.sqldelight.coroutine)
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutines.extensions)
 
         }
         androidMain.dependencies {
@@ -86,7 +92,7 @@ kotlin {
             implementation(libs.kstore.file)
             //implementation(libs.kotlinx.coroutines.android)
 
-            //implementation(libs.sqldelight.android)
+            implementation(libs.sqldelight.android.driver)
             //debugImplementation(compose.uiTooling)
         }
         desktopMain.dependencies {
@@ -95,16 +101,19 @@ kotlin {
             implementation(libs.kstore.file)
             implementation(libs.kotlinx.coroutines.swing)
             //implementation(libs.logback)
-        //implementation(libs.sqldelight.desktop)
+            implementation(libs.sqldelight.jvm.driver)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
             implementation(libs.kstore.file)
-            //implementation(libs.sqldelight.native)
+            implementation(libs.sqldelight.ios.driver)
         }
         wasmJsMain.dependencies {
             //implementation(libs.ktor.client.js)
             implementation(libs.kstore.storage)
+            implementation(libs.sqldelight.webworker.driver)
+            implementation(npm("sql.js", libs.versions.sqlJs.get()))
+            implementation(devNpm("copy-webpack-plugin", libs.versions.webPackPlugin.get()))
 
         }
     }
@@ -158,11 +167,13 @@ compose.desktop {
     }
 }
 
-
-/*sqldelight {
+sqldelight {
     databases {
         create("Database") {
-            packageName.set("com.myapplication.common.cache")
+            packageName = "com.myapplication.common.cache"
+            generateAsync = true
+            verifyMigrations = false
         }
     }
-}*/
+    linkSqlite = true
+}

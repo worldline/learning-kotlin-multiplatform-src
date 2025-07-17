@@ -1,16 +1,11 @@
 package com.worldline.quiz.plugins
 
+import com.worldline.quiz.QuizDbService
 import io.ktor.server.application.*
-import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sse.sse
-import io.modelcontextprotocol.kotlin.sdk.Implementation
-import io.modelcontextprotocol.kotlin.sdk.ServerCapabilities
-import io.modelcontextprotocol.kotlin.sdk.server.Server
-import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import io.modelcontextprotocol.kotlin.sdk.server.SseServerTransport
-import io.modelcontextprotocol.kotlin.sdk.server.mcp
 import network.data.Answer
 import network.data.Question
 import network.data.Quiz
@@ -18,7 +13,7 @@ import kotlin.random.Random
 
 
 fun Application.configureRouting() {
-
+    val quizService = QuizDbService()
     val server = configureMcpServer()
     lateinit var transport: SseServerTransport
 
@@ -36,7 +31,9 @@ fun Application.configureRouting() {
         }
 
         get("/quiz") {
-            call.respond(generateQuiz())
+            //call.respond(generateQuiz())
+            val quiz = quizService.getQuiz()
+            call.respond(quiz)
         }
 
         //staticResources("/", "static")

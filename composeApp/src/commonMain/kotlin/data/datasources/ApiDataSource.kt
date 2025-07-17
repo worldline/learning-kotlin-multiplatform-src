@@ -1,7 +1,6 @@
 package data.datasources
 
 import data.dataclasses.Quiz
-import getPlatform
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*

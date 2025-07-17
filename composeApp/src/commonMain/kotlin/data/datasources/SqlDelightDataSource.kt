@@ -1,27 +1,15 @@
 package data.datasources
 
-/*import app.cash.sqldelight.async.coroutines.awaitAsList
-import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
-import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.async.coroutines.awaitAsList
 import com.myapplication.common.cache.Database
 import data.dataclasses.Question
 import data.dataclasses.Answer
+import provideDbDriver
+
+class SqlDelightDataSource(private val database: Database) {
 
 
-class SqlDelightDataSource(private val sqlDriver: SqlDriver) {
-
-    private var database = Database(sqlDriver)
-    private var quizQueries = database.quizDatabaseQueries
-
-
-    suspend fun getUpdateTimeStamp(): Long =
-        quizQueries.selectUpdateTimestamp().awaitAsOneOrNull()?.timestamprequest ?: 0L
-
-
-    suspend fun setUpdateTimeStamp(timeStamp: Long) {
-        quizQueries.deleteTimeStamp()
-        quizQueries.insertTimeStamp(timeStamp)
-    }
+    private var quizQueries = database.quizQuestionQueries
 
     suspend fun getAllQuestions(): List<Question> {
         return quizQueries.selectAllQuestionsWithAnswers().awaitAsList()
@@ -54,4 +42,9 @@ class SqlDelightDataSource(private val sqlDriver: SqlDriver) {
             }
         }
     }
-}*/
+
+    suspend fun resetQuestions() {
+        quizQueries.deleteQuestions()
+        quizQueries.deleteAnswers()
+    }
+}

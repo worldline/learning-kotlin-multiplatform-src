@@ -1,6 +1,6 @@
 package screens
 
-import QuizViewModel
+import QuestionViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Done
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,36 +18,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import data.dataclasses.Question
-import data.datasources.MockDataSource
-import getPlatform
+import app.cash.sqldelight.db.SqlDriver
+import com.myapplication.common.cache.Database
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import provideDbDriver
 
 
 @Preview
 @Composable
-internal fun quizScreenPreview() {
+internal fun QuizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    questionScreen( onFinishButtonPushed)
+    QuestionScreen( onFinishButtonPushed)
 }
 
 @Composable
-internal fun questionScreen(
+internal fun QuestionScreen(
     onFinishButtonPushed: (Int, Int) -> Unit
 ) {
-    val viewModel: QuizViewModel = viewModel { QuizViewModel() }
+
+    val viewModel: QuestionViewModel = viewModel { QuestionViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        viewModel.getQuestionQuiz()
-    }
     val questions by viewModel.questionState.collectAsStateWithLifecycle()
 
     if (questions.isNotEmpty()) {
@@ -111,11 +107,11 @@ internal fun questionScreen(
                     }
                 }
             ) {
-                if (questionProgress < questions.size - 1) nextOrDoneButton(
+                if (questionProgress < questions.size - 1) NextOrDoneButton(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     "Next"
                 )
-                else nextOrDoneButton(Icons.Filled.Done, "Done")
+                else NextOrDoneButton(Icons.Filled.Done, "Done")
             }
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth().height(20.dp),
@@ -130,7 +126,7 @@ internal fun questionScreen(
 }
 
 @Composable
-internal fun nextOrDoneButton(iv: ImageVector, label: String) {
+internal fun NextOrDoneButton(iv: ImageVector, label: String) {
     Icon(
         iv,
         contentDescription = "Localized description",

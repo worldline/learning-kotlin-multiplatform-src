@@ -6,22 +6,22 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import screens.questionScreen
-import screens.welcomeScreen
+import screens.QuestionScreen
+import screens.WelcomeScreen
 
 
 @Preview
 @Composable
-internal fun quizScreenPreview() {
+internal fun QuizScreenPreview() {
     val onFinishButtonPushed = { _: Int, _: Int -> }
-    questionScreen( onFinishButtonPushed)
+    QuestionScreen( onFinishButtonPushed)
 }
 
 @Preview
 @Composable
-internal fun welcomeScreenPreview() {
+internal fun WelcomeScreenPreview() {
     val onStartButtonPushed = { }
-    welcomeScreen(onStartButtonPushed)
+    WelcomeScreen(onStartButtonPushed)
 }
 
 fun main() = application {

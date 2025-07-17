@@ -22,6 +22,9 @@ dependencies {
     implementation(libs.ktor.server.cors)
     implementation(libs.ktor.server.config.yaml)
     implementation("io.modelcontextprotocol:kotlin-sdk:0.5.0")
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation("com.h2database:h2:2.2.224")
 }
 
 ktor {

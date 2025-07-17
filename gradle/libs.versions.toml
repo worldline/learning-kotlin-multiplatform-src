@@ -6,19 +6,31 @@ android-targetSdk = "35"
 kotlin = "2.1.20"
 agp = "8.7.3"
 navigation = "2.8.0-alpha13"
-compose-plugin = "1.8.0-beta02"
+compose-plugin = "1.8.2"
 
 androidx-activityCompose = "1.10.1"
-androidx-lifecycle = "2.8.4"
+androidx-lifecycle = "2.9.1"
 
 logback = "1.5.18"
-kotlinxDatetime = "0.6.2"
+kotlinxDatetime = "0.7.1"
 kotlinxCoroutinesCore = "1.10.2"
-ktorVersion = "3.1.2"
-kstore="0.9.1"
-
+ktorVersion = "3.2.2"
+kstore="1.0.0"
+exposed = "1.0.0-beta-4"
+sqldelight = "2.1.0"
+sqlJs = "1.8.0"
+webPackPlugin = "9.1.0"
 
 [libraries]
+
+sqldelight-jvm-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-ios-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-webworker-driver = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "sqldelight" }
+
+
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
@@ -50,7 +62,8 @@ ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negoti
 ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktorVersion" }
 ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorVersion" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
 
 [plugins]
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -59,6 +72,6 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-pl
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktorVersion" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

@@ -1,17 +1,11 @@
-CREATE TABLE update_time (
-     timestamprequest INTEGER
-);
-
-INSERT INTO update_time(timestamprequest) VALUES (0);
-
-CREATE TABLE questions (
+CREATE TABLE IF NOT EXISTS questions (
     id INTEGER PRIMARY KEY,
     label TEXT NOT NULL,
     correctAnswerId INTEGER  NOT NULL
  );
 
 
- CREATE TABLE answers (
+ CREATE TABLE IF NOT EXISTS answers (
     id INTEGER NOT NULL,
     label TEXT NOT NULL,
     question_id INTEGER NOT NULL,
@@ -22,18 +16,6 @@ CREATE TABLE questions (
           ON DELETE CASCADE
  );
 
-
-
- selectUpdateTimestamp:
- SELECT *
- FROM update_time;
-
- insertTimeStamp:
- INSERT INTO update_time(timestamprequest)
- VALUES (:timestamp);
-
- deleteTimeStamp:
- DELETE FROM update_time;
 
  deleteQuestions:
  DELETE FROM questions;

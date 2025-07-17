@@ -22,13 +22,13 @@ import quiz.composeapp.generated.resources.question2
 
 @Preview
 @Composable
-internal fun welcomeScreenPreview() {
+internal fun WelcomeScreenPreview() {
     val onStartButtonPushed = { }
-    welcomeScreen(onStartButtonPushed)
+    WelcomeScreen(onStartButtonPushed)
 }
 
 @Composable
-fun welcomeScreen(onStartButtonPushed: () -> Unit) {
+fun WelcomeScreen(onStartButtonPushed: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
