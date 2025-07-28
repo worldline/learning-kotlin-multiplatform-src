@@ -34,8 +34,6 @@ data class ScoreRoute(val score: Int, val questionSize: Int)
 
 @Composable
 fun App(navController: NavHostController = rememberNavController()) {
-
-
     MaterialTheme {
         NavHost(
             navController = navController,
@@ -49,13 +47,11 @@ fun App(navController: NavHostController = rememberNavController()) {
                 )
             }
             composable<QuizRoute> {
-
-                    QuestionScreen(
-                        onFinishButtonPushed = { score: Int, questionSize: Int ->
-                            navController.navigate(route = ScoreRoute(score, questionSize))
-                        },
-                    )
-
+                QuestionScreen(
+                    onFinishButtonPushed = { score: Int, questionSize: Int ->
+                        navController.navigate(route = ScoreRoute(score, questionSize))
+                    },
+                )
             }
             composable<ScoreRoute> { backStackEntry ->
                 val scoreRoute: ScoreRoute = backStackEntry.toRoute<ScoreRoute>()

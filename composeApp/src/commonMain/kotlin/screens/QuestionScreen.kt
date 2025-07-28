@@ -37,23 +37,18 @@ internal fun QuizScreenPreview() {
 internal fun QuestionScreen(
     onFinishButtonPushed: (Int, Int) -> Unit
 ) {
-
     val viewModel: QuestionViewModel = viewModel { QuestionViewModel() }
     var questionProgress by remember { mutableStateOf(0) }
     var selectedAnswer by remember { mutableStateOf(1L) }
     var score by remember { mutableStateOf(0) }
-
     val questions by viewModel.questionState.collectAsStateWithLifecycle()
 
     if (questions.isNotEmpty()) {
-
         Column(
             modifier = Modifier.fillMaxWidth().fillMaxHeight().background(Color(0xFFF5F5F5)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
-
         Card(
             shape = RoundedCornerShape(5.dp),
             modifier = Modifier.padding(60.dp)
@@ -121,8 +116,6 @@ internal fun QuestionScreen(
 
     }
     }
-
-
 }
 
 @Composable

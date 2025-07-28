@@ -17,11 +17,13 @@ kotlinxCoroutinesCore = "1.10.2"
 ktorVersion = "3.2.2"
 kstore="1.0.0"
 exposed = "1.0.0-beta-4"
+slf4jApi = "2.0.17"
 sqldelight = "2.1.0"
 sqlJs = "1.8.0"
 webPackPlugin = "9.1.0"
 
 [libraries]
+
 
 sqldelight-jvm-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
@@ -64,6 +66,7 @@ ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorVer
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+slf4jApi = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
 
 [plugins]
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

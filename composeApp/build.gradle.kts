@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -36,6 +37,8 @@ kotlin {
         }
     }
 
+
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "composeApp"
@@ -62,6 +65,8 @@ kotlin {
 
     sourceSets {
         val desktopMain by getting
+
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -97,11 +102,14 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.linux_arm64)
             implementation(libs.ktor.client.apache)
             implementation(libs.kstore.file)
             implementation(libs.kotlinx.coroutines.swing)
             //implementation(libs.logback)
             implementation(libs.sqldelight.jvm.driver)
+            implementation(libs.logback)
+            implementation(libs.slf4jApi)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin) //for iOS
@@ -164,6 +172,9 @@ compose.desktop {
             packageName = "com.worldline.quiz"
             packageVersion = "1.0.0"
         }
+        buildTypes.release.proguard {
+            isEnabled.set(false)  // Désactiver complètement
+        }
     }
 }
 
@@ -177,3 +188,26 @@ sqldelight {
     }
     linkSqlite = true
 }
+
+tasks.register<Exec>("deployToPi") {
+    group = "deployment"
+    description = "Deploy application to Raspberry Pi"
+
+    dependsOn("packageReleaseUberJarForCurrentOS")
+
+    // Spécifier le chemin complet du script
+    commandLine("bash", "${project.rootDir}/deploy.sh")
+
+    // Afficher la sortie du script en temps réel
+    standardOutput = System.out
+    errorOutput = System.err
+
+    doFirst {
+        val deployScript = File(project.rootDir, "deploy.sh")
+        if (!deployScript.exists()) {
+            throw GradleException("deploy.sh script not found at: ${deployScript.absolutePath}")
+        }
+        println("🚀 Starting deployment script...")
+    }
+}
+
