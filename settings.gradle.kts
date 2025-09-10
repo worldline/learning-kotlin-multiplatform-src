@@ -1,4 +1,4 @@
-rootProject.name = "Quiz"
+rootProject.name = "Quiz 2.0"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

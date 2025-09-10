@@ -25,7 +25,7 @@ internal fun welcomeScreenPreview() {
 }
 
 fun main() = application {
-    Window(onCloseRequest = ::exitApplication, title = "QuizApp") {
+    Window(onCloseRequest = ::exitApplication, title = "Quiz 2.0") {
         App()
     }
 }
